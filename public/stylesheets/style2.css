@@ -1,0 +1,22 @@
+body {
+    background: url("../assets/RT1.jpg") no-repeat center center fixed;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+  }
+  
+  form.signup,
+  form.login {
+    margin-top: 50px;
+  }
+
+  h2{
+    color:black;
+    font-size: 30px;
+  }
+  
+  .labelText{
+    color:black;
+  
+  }
