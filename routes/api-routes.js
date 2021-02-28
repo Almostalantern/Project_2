@@ -1,6 +1,7 @@
 // Requiring our models and passport as we've configured it
 const db = require("../models");
 const passport = require("../config/passport");
+const { Router } = require("express");
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -12,6 +13,7 @@ module.exports = function(app) {
       email: req.user.email,
       id: req.user.id
     });
+    // res.render("map", {email: req.user.email, id: req.user.id});
   });
 
   // Route for signing up a user. The user's password is automatically hashed and stored securely thanks to

@@ -15,9 +15,10 @@ CREATE TABLE users
 CREATE TABLE states
 (
     id int NOT NULL AUTO_INCREMENT,
-	state_name varchar(50) NOT NULL,
+	name varchar(50) NOT NULL,
+    code varchar(50) NOT NULL,
 	visited BOOLEAN DEFAULT false,
+    visit_priority INTEGER,
 	PRIMARY KEY (id)
-
 );
 

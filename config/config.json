@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "B1gB@dB3llig3r@nt",
+    "password": "Darwin@Maddy6",
     "database": "states_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
@@ -9,7 +9,7 @@
   "test": {
     "username": "root",
     "password": null,
-    "database": "database_test",
+    "database": "states_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
