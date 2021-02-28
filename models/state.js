@@ -11,24 +11,24 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true
     },
-    visted: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    visit_priority: {
-      type: DataTypes.INTEGER
-    }
-  })
-    
-  State.belongsToMany("User", {
-    through: 'visitedStates',
-    sourceKey: 'id'
-  })
+    // visted: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false
+    // },
+    // visitPriority: {
+    //   type: DataTypes.INTEGER
+    // }
+  });
 
-  State.belongsToMany("User", {
-    through: 'planToVisit',
-    sourceKey: 'id'
-  })
+  // State.belongsToMany("User", {
+  //   through: 'visitedStates',
+  //   // sourceKey: 'id'
+  // });
+
+  // State.belongsToMany("User", {
+  //   through: 'planToVisit',
+  //   // sourceKey: 'id'
+  // });
 
   return User;
 };
