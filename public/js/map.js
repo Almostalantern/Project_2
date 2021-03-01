@@ -1,28 +1,42 @@
 let fillColor;
 let plan = false;
 // eslint-disable-next-line prefer-const
-let stateValues = {
-  "US-IN": "visited",
-  "US-CA": "visited",
-  "US-IA": "planned",
-  "US-NE": "planned"
-};
+let stateValues = {};
+
+$(window).on("load", () => {
+  getStates();
+});
+
+function getStates() {
+  console.log("Getting states...");
+  const email = $(".member-name").text();
+  console.log(email);
+  $.get("/api/states/" + email).then(data => {
+    console.log(data);
+    stateValues = data;
+    generateMap(stateValues);
+  });
+}
 
 $("#plan").on("click", event => {
   event.preventDefault();
   if (plan) {
     plan = false;
+    $("#plan").text("Press to Select the States You Want to Visit");
+    $("#user-direction").text("Click the States Below that You've Visited");
   } else {
     plan = true;
+    $("#plan").text("Press to Select the States You've Visited");
+    $("#user-direction").text("Click the States Below that You Want to Visit");
   }
-  $("#map").empty();
-  generateMap();
+
+  generateMap(stateValues);
 });
 
-generateMap();
-
-function generateMap() {
+function generateMap(stateValues) {
+  // get the states visited and planned by the user
   console.log(stateValues);
+  $("#map").empty();
   if (plan) {
     fillColor = "#0000ff";
   } else {
@@ -52,9 +66,6 @@ function generateMap() {
       },
       selectedHover: {}
     },
-    // selectedRegions: [
-    //   // 'US-VA',
-    // ],
     series: {
       regions: [
         {
@@ -71,17 +82,27 @@ function generateMap() {
         }
       ]
     },
-    // onRegionClick: function(selectedRegions, code){
-    // },
     // eslint-disable-next-line no-unused-vars
     onRegionSelected: function(e, code, isSelected, selectedRegions) {
       console.log(code);
       if (plan) {
+        // get the code of the state and post to the planned api
+        const email = $(".member-name").text();
         Object.assign(stateValues, { [code]: "planned" });
         console.log(stateValues);
+        $.post("/api/planned/" + email + "/" + code, data => {
+          console.log(data);
+        });
+        generateMap(stateValues);
       } else {
+        // get the code of the state and post to the visited api
+        const email = $(".member-name").text();
         Object.assign(stateValues, { [code]: "visited" });
         console.log(stateValues);
+        $.post("/api/visited/" + email + "/" + code, data => {
+          console.log(data);
+        });
+        generateMap(stateValues);
       }
     }
   });
