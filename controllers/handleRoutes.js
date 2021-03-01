@@ -12,8 +12,8 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get("/map", (req, res) => {
-  res.render("map");
+router.get("/members", (req, res) => {
+  res.render("members");
 });
 
 module.exports = router;
