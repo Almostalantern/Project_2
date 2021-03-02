@@ -117,66 +117,71 @@ module.exports = function(app) {
       // The user is not logged in, send back an empty object
       res.json({});
     } else {
-      let states = {};
+      const states = {};
       db.User.findOne({ where: { email: req.params.email } }).then(user => {
-        console.log("User ID: " + user.id);
         const userId = user.id;
         db.Visited.findAll({ where: { UserId: userId } }).then(data => {
           const dataLength = data.length;
-          console.log("Data Length: " + dataLength);
-          for (i = 0; i < data.length; i++) {
-            // console.log(data[i].StateId);
-            db.State.findOne({ where: { id: data[i].StateId } }).done(state => {
-              // console.log(state.code);
-              let code = state.code;
-              let stateObj = { [code]: "visited" };
-              // console.log(stateObj);
-              Object.assign(states, stateObj);
-              // console.log(states);
-              // console.log("State Length: " + Object.keys(states).length);
-              if (Object.keys(states).length === data.length) {
-                db.Planned.findAll({ where: { UserId: userId } }).then(data => {
-                  const plannedLength = data.length;
-                  console.log("Planned Length: " + plannedLength);
-                  if (plannedLength === 0){
-                    res.json(states);
-                  } else {
-                    for (i = 0; i < data.length; i++) {
-                      // console.log(data[i].StateId);
-                      db.State.findOne({ where: { id: data[i].StateId } }).done(
-                        state => {
-                          // console.log(state.code);
-                          let code = state.code;
-                          let stateObj = { [code]: "planned" };
-                          // console.log(stateObj);
-                          Object.assign(states, stateObj);
-                          // console.log(states);
-                          // console.log(
-                          //   "State Length: " + Object.keys(states).length
-                          // );
-                          if (
-                            Object.keys(states).length ===
-                            dataLength + plannedLength
-                          ) {
-                            res.json(states);
-                          }
-                        }
-                      );
+          if (data.length === 0) {
+            db.Planned.findAll({ where: { UserId: userId } }).then(data => {
+              const plannedLength = data.length;
+              if (plannedLength === 0) {
+                res.json({});
+              } else {
+                for (i = 0; i < data.length; i++) {
+                  db.State.findOne({ where: { id: data[i].StateId } }).done(
+                    state => {
+                      const code = state.code;
+                      const stateObj = { [code]: "planned" };
+                      Object.assign(states, stateObj);
+                      if (
+                        Object.keys(states).length ===
+                        dataLength + plannedLength
+                      ) {
+                        res.json(states);
+                      }
                     }
-                  }
-                });
+                  );
+                }
               }
             });
+          } else {
+            for (i = 0; i < data.length; i++) {
+              db.State.findOne({ where: { id: data[i].StateId } }).done(
+                state => {
+                  const code = state.code;
+                  const stateObj = { [code]: "visited" };
+                  Object.assign(states, stateObj);
+                  if (Object.keys(states).length === data.length) {
+                    db.Planned.findAll({ where: { UserId: userId } }).then(
+                      data => {
+                        const plannedLength = data.length;
+                        if (plannedLength === 0) {
+                          res.json(states);
+                        } else {
+                          for (i = 0; i < data.length; i++) {
+                            db.State.findOne({
+                              where: { id: data[i].StateId }
+                            }).done(state => {
+                              const code = state.code;
+                              const stateObj = { [code]: "planned" };
+                              Object.assign(states, stateObj);
+                              if (
+                                Object.keys(states).length ===
+                                dataLength + plannedLength
+                              ) {
+                                res.json(states);
+                              }
+                            });
+                          }
+                        }
+                      }
+                    );
+                  }
+                }
+              );
+            }
           }
-
-          // db.Planned.findAll({ where: { UserId: userId } }).then(data => {
-          //   Object.keys(data).forEach(
-          //     db.State.findOne({ where: { id: data.id } }).then(state => {
-          //       Object.assign(states, { state.code: "planned" });
-          //       res.json(states);
-          //     })
-          //   );
-          // });
         });
       });
     }
