@@ -7,8 +7,6 @@ $(window).on("load", () => {
   getStates();
 });
 
-// generateMap(stateValues);
-
 function getStates() {
   console.log("Getting states...");
   const email = $(".member-name").text();
@@ -49,7 +47,6 @@ function generateMap(stateValues) {
     backgroundColor: "none",
     zoomOnScroll: false,
     regionsSelectable: true,
-    // regionsSelectableOne: true,
     regionStyle: {
       initial: {
         fill: "white",
@@ -69,6 +66,12 @@ function generateMap(stateValues) {
       },
       selectedHover: {}
     },
+    "insets": [{
+      "codes": ["US-DC"],
+      "width": 220,
+      "left": 380,
+      "top": 440
+    }],
     series: {
       regions: [
         {
@@ -87,14 +90,11 @@ function generateMap(stateValues) {
     },
     // eslint-disable-next-line no-unused-vars
     onRegionSelected: function(e, code, isSelected, selectedRegions) {
-      console.log(code);
-      // code.isSelected = false;
       $(".jvectormap-tip").remove();
       if (plan) {
         // get the code of the state and post to the planned api
         const email = $(".member-name").text();
         Object.assign(stateValues, { [code]: "planned" });
-        console.log(stateValues);
         $.post("/api/planned/" + email + "/" + code, data => {
           console.log(data);
         });
@@ -103,7 +103,6 @@ function generateMap(stateValues) {
         // get the code of the state and post to the visited api
         const email = $(".member-name").text();
         Object.assign(stateValues, { [code]: "visited" });
-        console.log(stateValues);
         $.post("/api/visited/" + email + "/" + code, data => {
           console.log(data);
         });

@@ -1,7 +1,8 @@
 // Requiring our models and passport as we've configured it
 const db = require("../models");
 const passport = require("../config/passport");
-// const { Router } = require("express");
+
+const apiFunction = require("../modules/apifunction");
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -58,23 +59,9 @@ module.exports = function(app) {
       res.json({});
     } else {
       // Otherwise add the state visited and user id to the visited table and send back the user's email and id
-      db.User.findOne({ where: { email: req.params.email } }).then(user => {
-        const userId = user.id;
-        db.State.findOne({ where: { code: req.params.code } }).then(state => {
-          const stateId = state.id;
-          db.Visited.create({
-            StateId: stateId,
-            UserId: userId
-          }).then(() => {
-            db.Planned.destroy({
-              where: {
-                StateId: stateId,
-                UserId: userId
-              }
-            });
-          });
-        });
-      });
+      const userEmail = req.params.email;
+      const stateCode = req.params.code;
+      apiFunction.markVisited(userEmail, stateCode);
       res.json({
         email: req.user.email,
         id: req.user.id
@@ -88,23 +75,9 @@ module.exports = function(app) {
       res.json({});
     } else {
       // Otherwise add the state visited and user id to the visited table and send back the user's email and id
-      db.User.findOne({ where: { email: req.params.email } }).then(user => {
-        const userId = user.id;
-        db.State.findOne({ where: { code: req.params.code } }).then(state => {
-          const stateId = state.id;
-          db.Planned.create({
-            StateId: stateId,
-            UserId: userId
-          }).then(() => {
-            db.Visited.destroy({
-              where: {
-                StateId: stateId,
-                UserId: userId
-              }
-            });
-          });
-        });
-      });
+      const userEmail = req.params.email;
+      const stateCode = req.params.code;
+      apiFunction.markPlanned(userEmail, stateCode);
       res.json({
         email: req.user.email,
         id: req.user.id
@@ -118,72 +91,8 @@ module.exports = function(app) {
       res.json({});
     } else {
       const states = {};
-      db.User.findOne({ where: { email: req.params.email } }).then(user => {
-        const userId = user.id;
-        db.Visited.findAll({ where: { UserId: userId } }).then(data => {
-          const dataLength = data.length;
-          if (data.length === 0) {
-            db.Planned.findAll({ where: { UserId: userId } }).then(data => {
-              const plannedLength = data.length;
-              if (plannedLength === 0) {
-                res.json({});
-              } else {
-                for (i = 0; i < data.length; i++) {
-                  db.State.findOne({ where: { id: data[i].StateId } }).done(
-                    state => {
-                      const code = state.code;
-                      const stateObj = { [code]: "planned" };
-                      Object.assign(states, stateObj);
-                      if (
-                        Object.keys(states).length ===
-                        dataLength + plannedLength
-                      ) {
-                        res.json(states);
-                      }
-                    }
-                  );
-                }
-              }
-            });
-          } else {
-            for (i = 0; i < data.length; i++) {
-              db.State.findOne({ where: { id: data[i].StateId } }).done(
-                state => {
-                  const code = state.code;
-                  const stateObj = { [code]: "visited" };
-                  Object.assign(states, stateObj);
-                  if (Object.keys(states).length === data.length) {
-                    db.Planned.findAll({ where: { UserId: userId } }).then(
-                      data => {
-                        const plannedLength = data.length;
-                        if (plannedLength === 0) {
-                          res.json(states);
-                        } else {
-                          for (i = 0; i < data.length; i++) {
-                            db.State.findOne({
-                              where: { id: data[i].StateId }
-                            }).done(state => {
-                              const code = state.code;
-                              const stateObj = { [code]: "planned" };
-                              Object.assign(states, stateObj);
-                              if (
-                                Object.keys(states).length ===
-                                dataLength + plannedLength
-                              ) {
-                                res.json(states);
-                              }
-                            });
-                          }
-                        }
-                      }
-                    );
-                  }
-                }
-              );
-            }
-          }
-        });
-      });
+      const userEmail = req.params.email;
+      apiFunction.getStates(res, states, userEmail);
     }
   });
 };
