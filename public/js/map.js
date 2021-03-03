@@ -66,12 +66,6 @@ function generateMap(stateValues) {
       },
       selectedHover: {}
     },
-    "insets": [{
-      "codes": ["US-DC"],
-      "width": 220,
-      "left": 380,
-      "top": 440
-    }],
     series: {
       regions: [
         {
