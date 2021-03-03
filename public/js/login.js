@@ -30,8 +30,6 @@ $(document).ready(() => {
     })
       .then(res => {
         console.log(res);
-        // window.location.replace("/members");
-        // res.redirect(307, "/members");
         window.location.assign("/members");
         // If there's an error, log the error
       })
