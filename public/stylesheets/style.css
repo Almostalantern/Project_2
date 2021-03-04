@@ -1,46 +1,21 @@
 body {
   background: url("../assets/RT2.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  -webkit-background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
 }
 
 form.signup,
 form.login {
-  margin-top: 70%;
+  margin-top: 50px;
 }
 
 h2{
-  color: #704A3D;
+  color: white;
   font-size: 30px;
-  margin-top: 20%;
-  margin-left: 20%;
-  margin-right: 20%;
 }
 
 .labelText{
   color:white;
-}
-
-a {
-  color: #0D2F4F;
-  font-weight: 500;
-}
-
-#ex {
-  color: #0D2F4F;
-  font-weight: 700;
-
-}
-
-
-
-
-h1,h3 {
-  color: #704A3D;
-}
-
-#R,h4 {
-  color: #0D2F4F;
 }
