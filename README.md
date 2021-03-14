@@ -28,3 +28,4 @@
   Github:AlmostaLantern
  
   Email:Jackccinc@gmail.com
+  brien.barr3320@gmail.com
