@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  const Visited = sequelize.define("Visited", {
+  const Visited = sequelize.define("visited", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
