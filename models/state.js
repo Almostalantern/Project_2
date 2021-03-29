@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  const State = sequelize.define("State", {
+  const State = sequelize.define("state", {
     name: {
       type: DataTypes.STRING,
       allowNull: false,

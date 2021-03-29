@@ -8,13 +8,15 @@
   },
   "test": {
     "username": "root",
-    "password": null,
+    "password": "B1gB@dB3llig3r@nt",
     "database": "states_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "use_env_variable": "JAWSDB_URL",
+    "username": "st1ww0cl4o7izwb6",
+    "password": "teinfdkhl75tm8bs",
     "dialect": "mysql"
   }
 }
