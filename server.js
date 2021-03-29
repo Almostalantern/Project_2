@@ -1,6 +1,7 @@
 // Requiring necessary npm packages
 const express = require("express");
 const session = require("express-session");
+const compression = require("compression")
 
 // Requiring passport as we've configured it
 const passport = require("./config/passport");
@@ -16,6 +17,9 @@ const router = require("./controllers/handleRoutes");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use(router);
+
+// for compression
+app.use(compression());
 
 // Creating express app and configuring middleware needed for authentication
 app.use(express.urlencoded({ extended: true }));
