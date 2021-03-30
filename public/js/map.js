@@ -11,7 +11,7 @@ function getStates() {
   console.log("Getting states...");
   const email = $(".member-name").text();
   console.log(email);
-  $.get("/api/states/" + email).then(data => {
+  $.get("/api/states/").then(data => {
     console.log(data);
     stateValues = data;
     generateMap(stateValues);

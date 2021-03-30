@@ -85,13 +85,13 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/api/states/:email", (req, res) => {
+  app.get("/api/states/", (req, res) => {
     if (!req.user) {
       // The user is not logged in, send back an empty object
       res.json({});
     } else {
       const states = {};
-      const userEmail = req.params.email;
+      const userEmail = req.user.email;
       apiFunction.getStates(res, states, userEmail);
     }
   });
