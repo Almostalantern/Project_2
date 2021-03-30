@@ -3,7 +3,7 @@ let plan = false;
 // eslint-disable-next-line prefer-const
 let stateValues = {};
 
-$(window).on("load", () => {
+$(document).on("ready", () => {
   getStates();
 });
 
